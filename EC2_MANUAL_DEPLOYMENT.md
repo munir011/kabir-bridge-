@@ -4,30 +4,27 @@ This guide provides step-by-step instructions for manually deploying the Kabir B
 
 ## Prerequisites
 
-1. An EC2 instance running Amazon Linux 2023 or Ubuntu
+1. An EC2 instance running Amazon Linux 2023
 2. SSH access to your EC2 instance
 3. Your GitHub repository with the bot code
 
 ## Step 1: Connect to Your EC2 Instance
 
 ```bash
-ssh -i /path/to/your-key.pem ubuntu@your-ec2-ip
+ssh -i /path/to/your-key.pem ec2-user@your-ec2-public-dns.amazonaws.com
 ```
 
-Replace `/path/to/your-key.pem` with the actual path to your key file and `your-ec2-ip` with your EC2 instance's public IP address.
+Replace `/path/to/your-key.pem` with the actual path to your key file and `your-ec2-public-dns.amazonaws.com` with your EC2 instance's public DNS.
 
 ## Step 2: Install Required Software
 
+For Amazon Linux 2023:
 ```bash
 # Update system packages
-sudo apt-get update
-sudo apt-get upgrade -y
+sudo yum update -y
 
 # Install Python 3.11 and other dependencies
-sudo apt-get install -y software-properties-common
-sudo add-apt-repository -y ppa:deadsnakes/ppa
-sudo apt-get update
-sudo apt-get install -y python3.11 python3.11-venv python3.11-dev python3-pip git
+sudo yum install -y python3.11 python3.11-devel python3.11-pip git
 ```
 
 ## Step 3: Clone Your Repository
@@ -82,9 +79,9 @@ After=network.target
 
 [Service]
 Type=simple
-User=ubuntu
-WorkingDirectory=/home/ubuntu/kabir-bridge-bot
-ExecStart=/bin/bash -c 'source /home/ubuntu/kabir-bridge-bot/venv_py311/bin/activate && python /home/ubuntu/kabir-bridge-bot/bot/bot.py'
+User=ec2-user
+WorkingDirectory=/home/ec2-user/kabir-bridge-bot
+ExecStart=/bin/bash -c 'source /home/ec2-user/kabir-bridge-bot/venv_py311/bin/activate && python3.11 /home/ec2-user/kabir-bridge-bot/bot/bot.py'
 Restart=always
 RestartSec=10
 
@@ -147,7 +144,7 @@ sudo systemctl restart kabir-bridge-bot
 If you see "python: command not found", make sure to use `python3.11` instead of `python` or update the service file to use the full path to Python.
 
 ### Permission Issues
-If you encounter permission issues, make sure the ubuntu user has access to all necessary files:
+If you encounter permission issues, make sure the ec2-user has access to all necessary files:
 ```bash
-sudo chown -R ubuntu:ubuntu /home/ubuntu/kabir-bridge-bot
+sudo chown -R ec2-user:ec2-user /home/ec2-user/kabir-bridge-bot
 ``` 

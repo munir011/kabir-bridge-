@@ -4,9 +4,9 @@
 echo "Deploying Kabir Bridge Bot to EC2..."
 
 # Configuration - EDIT THESE VALUES
-EC2_USER="ubuntu"
-EC2_IP="your-ec2-ip"  # Replace with your EC2 instance's public IP
-KEY_PATH="$HOME/.ssh/your-key.pem"  # Replace with the path to your .pem file
+EC2_USER="ec2-user"
+EC2_IP="your-ec2-public-dns.amazonaws.com"  # Replace with your EC2 instance's public DNS
+KEY_PATH="$HOME/path/to/your-key.pem"  # Replace with the path to your .pem file
 REPO_URL="https://github.com/munir011/kabir-bridge-.git"
 BOT_DIR="kabir-bridge-bot"
 
@@ -24,15 +24,11 @@ chmod 400 "$KEY_PATH"
 echo "Connecting to EC2 instance and setting up the environment..."
 ssh -i "$KEY_PATH" "$EC2_USER@$EC2_IP" << 'EOF'
     # Update system packages
-    sudo apt-get update
-    sudo apt-get upgrade -y
+    sudo yum update -y
 
     # Install Python 3.11 and required packages
     echo "Installing Python 3.11 and dependencies..."
-    sudo apt-get install -y software-properties-common
-    sudo add-apt-repository -y ppa:deadsnakes/ppa
-    sudo apt-get update
-    sudo apt-get install -y python3.11 python3.11-venv python3.11-dev python3-pip git
+    sudo yum install -y python3.11 python3.11-devel python3.11-pip git
 
     # Clone the repository
     echo "Cloning the repository..."
