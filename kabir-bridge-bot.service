@@ -1,0 +1,14 @@
+[Unit]
+Description=Kabir Bridge Telegram Bot
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/kabir-bridge-bot
+ExecStart=/bin/bash -c 'source /home/ubuntu/kabir-bridge-bot/venv_py311/bin/activate && python /home/ubuntu/kabir-bridge-bot/bot/bot.py'
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target 
