@@ -78,4 +78,4 @@ This project is proprietary software. All rights reserved.
 
 ---
 
-© 2025 Kabir Bridge. All rights reserved. 
+© 2025 Kabir Bridge. All rights reserved.
